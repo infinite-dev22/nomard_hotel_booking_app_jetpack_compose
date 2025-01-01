@@ -2,12 +2,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -52,6 +62,23 @@ fun CustomAppBar(
     }
 }
 
+@Composable
+fun SearchField() {
+    var value by remember { mutableStateOf("") }
+    OutlinedTextField(
+        modifier = Modifier.fillMaxWidth().heightIn(min = 49.dp, max = 50.dp),
+        value = value,
+        onValueChange = {
+            value = it
+        },
+        maxLines = 1,
+        singleLine = true,
+        placeholder = { Text(text = "Search") },
+        leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
+        shape = RoundedCornerShape(8.dp),
+    )
+}
+
 @Preview
 @Composable
 private fun CustomAppBarPreview() {
@@ -62,5 +89,13 @@ private fun CustomAppBarPreview() {
             cityLocation = "Kampala",
             countryLocation = "Uganda",
         )
+    }
+}
+
+@Preview
+@Composable
+private fun SearchFieldPreview() {
+    Nomard_hotel_booking_app_jetpack_composeTheme {
+        SearchField()
     }
 }
