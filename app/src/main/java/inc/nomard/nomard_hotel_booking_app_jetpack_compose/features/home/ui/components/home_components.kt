@@ -1,7 +1,11 @@
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -12,6 +16,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -66,7 +71,9 @@ fun CustomAppBar(
 fun SearchField() {
     var value by remember { mutableStateOf("") }
     OutlinedTextField(
-        modifier = Modifier.fillMaxWidth().heightIn(min = 49.dp, max = 50.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(min = 49.dp, max = 50.dp),
         value = value,
         onValueChange = {
             value = it
@@ -77,6 +84,37 @@ fun SearchField() {
         leadingIcon = { Icon(Icons.Default.Search, contentDescription = "Search") },
         shape = RoundedCornerShape(8.dp),
     )
+}
+
+@Composable
+fun CustomChipButton(text: String, value: Boolean, onSelected: (Boolean) -> Unit) {
+    var isSelected by remember { mutableStateOf(value) }
+    Surface {
+        Column(
+            modifier = Modifier
+                .size(80.dp, 30.dp)
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.primary,
+                    shape = RoundedCornerShape(6.dp)
+                )
+                .background(
+                    color = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surface,
+                    shape = RoundedCornerShape(6.dp)
+                )
+                .clickable {
+                    isSelected = !isSelected
+                    onSelected.invoke(isSelected)
+                },
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Text(
+                text = text,
+                color = if (isSelected) Color.White else Color.Black,
+            )
+        }
+    }
 }
 
 @Preview
@@ -97,5 +135,29 @@ private fun CustomAppBarPreview() {
 private fun SearchFieldPreview() {
     Nomard_hotel_booking_app_jetpack_composeTheme {
         SearchField()
+    }
+}
+
+@Preview
+@Composable
+private fun CustomChipButtonPreview() {
+    Nomard_hotel_booking_app_jetpack_composeTheme {
+        var isSelected by remember { mutableStateOf(true) }
+        Row(modifier = Modifier.height(80.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+            CustomChipButton(
+                text = "All",
+                value = false,
+                onSelected = {
+                    isSelected = it
+                },
+            )
+            CustomChipButton(
+                text = "All",
+                value = true,
+                onSelected = {
+                    isSelected = it
+                },
+            )
+        }
     }
 }
